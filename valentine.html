@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Very Important Link From Brian</title>
+<meta property="og:title" content="A Very Important Link From Brian">
+<meta property="og:description" content="You should probably open this.">
+<meta property="og:type" content="website">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: #fafafa;
+    color: #222;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 480px;
+    width: 100%;
+  }
+
+  .container.expanded {
+    max-width: 624px;
+  }
+
+  .page {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .page.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-text {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .choice {
+    font-family: inherit;
+    font-size: 15px;
+    text-align: left;
+    padding: 14px 18px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #333;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .choice:hover {
+    border-color: #bbb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .choice:active {
+    background: #f5f5f5;
+  }
+
+  .chapter {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #bbb;
+    margin-bottom: 12px;
+  }
+
+  .big-question {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin: 24px 0 28px;
+    line-height: 1.4;
+  }
+
+  .question-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    position: relative;
+    min-height: 52px;
+  }
+
+  .btn-yes {
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 36px;
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .btn-yes:hover {
+    background: #444;
+  }
+
+  .btn-no {
+    font-family: inherit;
+    font-size: 15px;
+    padding: 12px 28px;
+    background: #fff;
+    color: #999;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .dodge-msg {
+    text-align: center;
+    font-size: 14px;
+    color: #c0392b;
+    margin-top: 14px;
+    min-height: 1.4em;
+  }
+
+  /* Final page */
+  .final-heart {
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 8px;
+    animation: popIn 0.4s ease both;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  .final-text {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    line-height: 1.8;
+    margin-top: 16px;
+  }
+
+  .final-sig {
+    text-align: center;
+    font-size: 15px;
+    color: #aaa;
+    margin-top: 20px;
+  }
+
+  /* Calendar section */
+  .calendar-section {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid #eee;
+  }
+
+  .calendar-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #bbb;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .calendars {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .month {
+    width: 100%;
+  }
+
+  .month-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 10px;
+  }
+
+  .month-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: #e8e8e8;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+
+  .day-header {
+    font-size: 10px;
+    font-weight: 600;
+    color: #999;
+    padding: 6px 0;
+    letter-spacing: 0.5px;
+    text-align: center;
+    background: #f5f5f5;
+  }
+
+  .day-cell {
+    background: #fff;
+    min-height: 58px;
+    padding: 6px;
+    position: relative;
+  }
+
+  .day-cell.empty {
+    background: #fafafa;
+  }
+
+  .day-num {
+    font-size: 12px;
+    color: #bbb;
+  }
+
+  .day-cell.has-date .day-num {
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .day-cell.today .day-num {
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* Category colors */
+  .day-cell.cat-dinner { background: #e8f0fe; }
+  .day-cell.cat-dinner .day-num { color: #1a56db; }
+  .day-cell.cat-dinner .day-label { color: #1a56db; }
+
+  .day-cell.cat-tennis { background: #e6f9ed; }
+  .day-cell.cat-tennis .day-num { color: #15803d; }
+  .day-cell.cat-tennis .day-label { color: #15803d; }
+
+  .day-cell.cat-hangout { background: #fef3e2; }
+  .day-cell.cat-hangout .day-num { color: #b45309; }
+  .day-cell.cat-hangout .day-label { color: #b45309; }
+
+  .day-cell.cat-milestone { background: #f3e8ff; }
+  .day-cell.cat-milestone .day-num { color: #7c3aed; }
+  .day-cell.cat-milestone .day-label { color: #7c3aed; }
+
+  .day-cell.today {
+    background: #fde8e8;
+  }
+
+  .day-cell.today .day-num {
+    color: #c0392b;
+  }
+
+  .day-label {
+    font-size: 9px;
+    line-height: 1.2;
+    margin-top: 2px;
+    font-weight: 600;
+  }
+
+  .day-cell.today .day-label {
+    color: #c0392b;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    body {
+      padding: 16px;
+    }
+
+    .container.expanded {
+      max-width: 100%;
+    }
+
+    .page-text {
+      font-size: 17px;
+    }
+
+    .big-question {
+      font-size: 21px;
+    }
+
+    .day-cell {
+      min-height: 46px;
+      padding: 3px;
+    }
+
+    .day-num {
+      font-size: 10px;
+    }
+
+    .day-label {
+      font-size: 7px;
+    }
+
+    .day-header {
+      font-size: 9px;
+    }
+
+    .month-grid {
+      gap: 1px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .day-cell {
+      min-height: 40px;
+      padding: 2px;
+    }
+
+    .day-label {
+      font-size: 6px;
+    }
+
+    .day-num {
+      font-size: 9px;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="p1">
+    <div class="chapter">February 14th</div>
+    <div class="page-text">
+      It's the morning of Valentine's Day. You wake up and reach for your phone. You have 1 unread message from Brian.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p2a')">Open the message</button>
+      <button class="choice" onclick="go('p2b')">Go back to sleep</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2A: open message -->
+  <div class="page" id="p2a">
+    <div class="chapter">The Message</div>
+    <div class="page-text">
+      It's from Brian. It says:<br><br>
+      <em>"Hey. I made you something. Click this link."</em><br><br>
+      There is a link.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p3')">Click the link</button>
+      <button class="choice" onclick="go('p2a2')">Reply "is this a virus"</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2A-2: suspicious -->
+  <div class="page" id="p2a2">
+    <div class="chapter">Suspicious</div>
+    <div class="page-text">
+      Brian replies:<br><br>
+      <em>"It's not a virus. I promise. I am a software engineer. I know what a virus is. Please just click it."</em>
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p3')">Fine, click it</button>
+      <button class="choice" onclick="go('p2a3')">Still suspicious</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2A-3: very suspicious -->
+  <div class="page" id="p2a3">
+    <div class="chapter">Very Suspicious</div>
+    <div class="page-text">
+      Brian sends 5 more texts in a row:<br><br>
+      <em>"Please."</em><br>
+      <em>"It's cute I promise."</em><br>
+      <em>"I worked hard on this."</em><br>
+      <em>"Laurin."</em><br>
+      <em>"Please."</em><br><br>
+      You give in.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p3')">Click the link</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2B: sleep -->
+  <div class="page" id="p2b">
+    <div class="chapter">Back to Sleep</div>
+    <div class="page-text">
+      You go back to sleep. You have a weird dream that someone is building a website about you. Unsettling.<br><br>
+      You wake up 30 minutes later. The message is still there. There are now 4 follow-up texts from Brian.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p2a')">Fine, check the message</button>
+      <button class="choice" onclick="go('p2b2')">Ignore (risky)</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2B-2: ignore -->
+  <div class="page" id="p2b2">
+    <div class="chapter">Bold Move</div>
+    <div class="page-text">
+      You try to ignore it. Brian has now sent 7 texts and a voice memo. Your phone will not stop buzzing. This is not sustainable.<br><br>
+      You open the message.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p2a')">Read it</button>
+    </div>
+  </div>
+
+  <!-- PAGE 3: you're here -->
+  <div class="page" id="p3">
+    <div class="chapter">You're Here</div>
+    <div class="page-text">
+      Ok. Welcome to Brian's very important website.<br><br>
+      He spent mass time on this so please be nice.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p4')">Continue</button>
+      <button class="choice" onclick="go('p3b')">Leave website</button>
+    </div>
+  </div>
+
+  <!-- PAGE 3B: no escape -->
+  <div class="page" id="p3b">
+    <div class="chapter">Nice Try</div>
+    <div class="page-text">
+      You tried to leave. Unfortunately Brian did not add a back button. He's not great at UI but he <em>is</em> great at trapping you on a webpage.<br><br>
+      You're here now.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p4')">Fine. Continue.</button>
+    </div>
+  </div>
+
+  <!-- PAGE 4: the buildup -->
+  <div class="page" id="p4">
+    <div class="chapter">An Announcement</div>
+    <div class="page-text">
+      Brian would like you to know that the last few months have been really great.<br><br>
+      Like, genuinely really great. Even that time you watched Beast Games without him. He's over that though (he says).
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p5a')">He's pretty cool too I guess</button>
+      <button class="choice" onclick="go('p5a')">Tell me something I don't know</button>
+    </div>
+  </div>
+
+  <!-- PAGE 5A -->
+  <div class="page" id="p5a">
+    <div class="chapter">Getting Somewhere</div>
+    <div class="page-text">
+      He also wants you to know that he lets you win at tennis sometimes. Not every time. But sometimes.<br><br>
+      He wasn't going to tell you that but here we are.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p5b')">Ok what else</button>
+    </div>
+  </div>
+
+  <!-- PAGE 5B -->
+  <div class="page" id="p5b">
+    <div class="chapter">While We're at It</div>
+    <div class="page-text">
+      He also gets a little stupid around you sometimes. Like the time he tried to kiss you when you were sick. Not his smoothest moment.<br><br>
+      He wasn't going to bring that up but here we are.
+    </div>
+    <div class="choices">
+      <button class="choice" onclick="go('p6')">Ok where is this going...</button>
+    </div>
+  </div>
+
+  <!-- PAGE 6: the question -->
+  <div class="page" id="p6">
+    <div class="chapter" style="text-align:center;">The Point of All This</div>
+    <div class="page-text" style="text-align:center;">
+      Anyway. Brian has a question.<br>
+      He's been meaning to ask for a bit now.<br><br>
+      Here goes.
+    </div>
+    <div class="big-question">Laurin, will you be my Valentine?</div>
+    <div class="question-buttons">
+      <button class="btn-yes" onclick="sayYes()">Yes</button>
+      <button class="btn-no" id="noBtn" onmouseover="dodgeNo()" onclick="dodgeNo()">No</button>
+    </div>
+    <div class="dodge-msg" id="dodgeMsg">&nbsp;</div>
+  </div>
+
+  <!-- PAGE 7: she said yes -->
+  <div class="page" id="p7">
+    <div class="final-heart">&hearts;</div>
+    <div class="final-text">
+      Happy Valentine's Day, Laurin.
+    </div>
+
+    <div class="calendar-section">
+      <div class="calendar-label">So far</div>
+      <div class="calendars" id="calendars"></div>
+    </div>
+
+    <div class="final-sig">&mdash; Brian</div>
+  </div>
+
+</div>
+
+<script>
+  // ============================================
+  // DATE DATA - replace these with real dates!
+  // ============================================
+  // categories: dinner, tennis, hangout, milestone
+  var dates = [
+    { month: 11, day: 3, label: 'Tatte (1st date)', cat: 'milestone' },
+    { month: 11, day: 10, label: 'Zaytinya', cat: 'dinner' },
+    { month: 11, day: 17, label: 'Hanukkah dinner', cat: 'dinner' },
+    { month: 0, day: 2, label: 'Tennis', cat: 'tennis' },
+    { month: 0, day: 7, label: 'Dinner in', cat: 'dinner' },
+    { month: 0, day: 10, label: 'Lazy day / Bronsons', cat: 'hangout' },
+    { month: 0, day: 14, label: 'Tennis', cat: 'tennis' },
+    { month: 0, day: 16, label: 'Official!', cat: 'milestone' },
+    { month: 0, day: 19, label: 'Football / dinner in', cat: 'hangout' },
+    { month: 0, day: 21, label: "Nettie's", cat: 'dinner' },
+    { month: 0, day: 24, label: 'Snowstorm', cat: 'hangout' },
+    { month: 0, day: 25, label: 'Snowstorm pt 2', cat: 'hangout' },
+    { month: 0, day: 29, label: "Clyde's", cat: 'dinner' },
+    { month: 0, day: 31, label: 'Chinese takeout', cat: 'dinner' },
+    { month: 1, day: 1, label: 'Zoo', cat: 'hangout' },
+    { month: 1, day: 14, label: "Valentine's Day", today: true }
+  ];
+
+  // months to render: Dec 2025, Jan 2026, Feb 2026
+  var months = [
+    { year: 2025, month: 11, name: 'December 2025' },
+    { year: 2026, month: 0, name: 'January 2026' },
+    { year: 2026, month: 1, name: 'February 2026' }
+  ];
+
+  function buildCalendars() {
+    var container = document.getElementById('calendars');
+    var dayNames = ['S','M','T','W','T','F','S'];
+
+    months.forEach(function(m) {
+      var div = document.createElement('div');
+      div.className = 'month';
+
+      var title = document.createElement('div');
+      title.className = 'month-name';
+      title.textContent = m.name;
+      div.appendChild(title);
+
+      var grid = document.createElement('div');
+      grid.className = 'month-grid';
+
+      // day headers
+      dayNames.forEach(function(d) {
+        var h = document.createElement('div');
+        h.className = 'day-header';
+        h.textContent = d;
+        grid.appendChild(h);
+      });
+
+      var firstDay = new Date(m.year, m.month, 1).getDay();
+      var totalDays = new Date(m.year, m.month + 1, 0).getDate();
+
+      // empty cells
+      for (var e = 0; e < firstDay; e++) {
+        var empty = document.createElement('div');
+        empty.className = 'day-cell empty';
+        grid.appendChild(empty);
+      }
+
+      // day cells
+      for (var d = 1; d <= totalDays; d++) {
+        var cell = document.createElement('div');
+        cell.className = 'day-cell';
+
+        var num = document.createElement('div');
+        num.className = 'day-num';
+        num.textContent = d;
+        cell.appendChild(num);
+
+        var match = dates.find(function(dt) {
+          return dt.month === m.month && dt.day === d;
+        });
+
+        if (match) {
+          if (match.today) {
+            cell.className += ' today';
+          } else {
+            cell.className += ' has-date cat-' + (match.cat || 'hangout');
+          }
+          var label = document.createElement('div');
+          label.className = 'day-label';
+          label.textContent = match.label;
+          cell.appendChild(label);
+        }
+
+        grid.appendChild(cell);
+      }
+
+      div.appendChild(grid);
+      container.appendChild(div);
+    });
+  }
+
+  // ============================================
+  // PAGE NAVIGATION
+  // ============================================
+  function go(id) {
+    var current = document.querySelector('.page.active');
+    if (current) current.classList.remove('active');
+    var next = document.getElementById(id);
+    next.classList.remove('active');
+    void next.offsetWidth;
+    next.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ============================================
+  // NO BUTTON DODGE
+  // ============================================
+  var dodgeCount = 0;
+  var msgs = [
+    "That button doesn't work.",
+    "Weird, it moved. Try clicking Yes instead.",
+    "Are you seriously trying to click No right now?",
+    "Brian spent mass time on this and you're clicking No?",
+    "That button is broken. Probably a bug.",
+    "IT has been notified. In the meantime, click Yes.",
+    "You're really committed to this bit huh.",
+    "Ok I respect the effort. But click Yes.",
+    "Last chance... just kidding it'll keep moving.",
+    "Fine. You win. But also please click Yes."
+  ];
+
+  function dodgeNo() {
+    var btn = document.getElementById('noBtn');
+    var msg = document.getElementById('dodgeMsg');
+
+    msg.textContent = msgs[dodgeCount % msgs.length];
+    dodgeCount++;
+
+    var parent = document.querySelector('.question-buttons');
+    var pw = parent.offsetWidth - btn.offsetWidth - 10;
+    btn.style.position = 'absolute';
+    btn.style.left = Math.random() * pw + 'px';
+    btn.style.top = (Math.random() * 40 - 20) + 'px';
+
+    if (dodgeCount > 4) {
+      var s = Math.max(10, 15 - dodgeCount);
+      btn.style.fontSize = s + 'px';
+      btn.style.padding = Math.max(4, 12 - dodgeCount) + 'px ' + Math.max(10, 28 - dodgeCount * 2) + 'px';
+    }
+
+    if (dodgeCount > 8) {
+      btn.textContent = 'Fine... Yes';
+      btn.style.background = '#222';
+      btn.style.color = '#fff';
+      btn.style.border = 'none';
+      btn.onmouseover = null;
+      btn.onclick = sayYes;
+    }
+  }
+
+  // ============================================
+  // YES
+  // ============================================
+  function sayYes() {
+    go('p7');
+    document.querySelector('.container').classList.add('expanded');
+    buildCalendars();
+  }
+
+</script>
+
+</body>
+</html>
